@@ -67,7 +67,7 @@ audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-pause-b
   width: 100%; /* Ajustar al ancho del dispositivo */
 }
 .sectionTitle {
-  background-color: #B3D4C4;
+  background-color: #d4ebe4;
   padding: 20px;
   text-align: center;
   margin-top: 1rem;
