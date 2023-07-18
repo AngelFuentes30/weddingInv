@@ -3,7 +3,7 @@ function audioPlay(){
     miAudio.play();
 }
 // Fecha específica para el contador
-var targetDate = new Date('2023-12-15T22:00:00Z');
+var targetDate = new Date('2023-12-16T03:00:00Z');
 
 function updateCountdown() {
     var currentDate = new Date();
