@@ -9,32 +9,52 @@ function updateCountdown() {
     var currentDate = new Date();
     var timeDifference = targetDate - currentDate;
 
-    // Cálculo de días, horas, minutos y segundos
-    var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-    // Añadir un 0 a la izquierda si el número es menor que 10
-    if (days < 10) {
-        days = `0${days}`;
-    }
-    if (hours < 10) {
-        hours = `0${hours}`
-    }
-    if (minutes < 10) {
-        minutes = `0${minutes}`
-    }
-    if (seconds < 10) {
-        seconds = `0${seconds}`
-    }
-    // Actualización del contador
-    if (timeDifference < 0) {
-        document.getElementById('timerBack').textContent = 'ES HOY!';
+    if (timeDifference >= 0) {
+        // Fecha futura: calcular el tiempo que falta
+        var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        // Formato con ceros a la izquierda
+        days = days < 10 ? `0${days}` : days;
+        hours = hours < 10 ? `0${hours}` : hours;
+        minutes = minutes < 10 ? `0${minutes}` : minutes;
+        seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+        document.getElementById('timerBack').innerText = `${days} : ${hours} : ${minutes} : ${seconds}`;
     } else {
-        document.getElementById('timerBack').textContent = `${days} : ${hours} : ${minutes} : ${seconds}`
-        // console.log(`${days}:${hours}:${minutes}:${seconds}`);
+        // Fecha pasada: calcular cuánto tiempo ha transcurrido
+        var pastDate = new Date(targetDate);
+        var years = currentDate.getFullYear() - pastDate.getFullYear();
+        var months = currentDate.getMonth() - pastDate.getMonth();
+        var days = currentDate.getDate() - pastDate.getDate();
+
+        if (days < 0) {
+            months -= 1;
+            var previousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+            days += previousMonth.getDate();
+        }
+
+        if (months < 0) {
+            years -= 1;
+            months += 12;
+        }
+
+        // Función para pluralizar
+        function pluralize(value, singular, plural) {
+            return value === 1 ? `${value} ${singular}` : `${value} ${plural}`;
+        }
+
+        document.getElementById('timerBack').innerText =
+            `Han pasado\n` +
+            `${pluralize(years, "año", "años")}\n` +
+            `${pluralize(months, "mes", "meses")}\n` +
+            `${pluralize(days, "día", "días")}`;
     }
 }
+
+
 
 // Actualizar el contador cada segundo
 setInterval(updateCountdown, 1000);
